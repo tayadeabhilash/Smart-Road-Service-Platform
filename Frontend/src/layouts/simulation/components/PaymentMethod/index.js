@@ -22,7 +22,6 @@ import Icon from "@mui/material/Icon";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -37,9 +36,8 @@ import MDButton from "components/MDButton";
 // Material Dashboard 2 React context
 import { useMaterialUIController } from "context";
 
-function PaymentMethod() {
+function ActiveSimulation() {
   const [controller] = useMaterialUIController();
-  const { darkMode } = controller;
   const [open, setOpen] = React.useState(false);
   const [map, setMap] = useState('');
   const [weather, setWeather] = useState('');
@@ -172,4 +170,4 @@ function PaymentMethod() {
   );
 }
 
-export default PaymentMethod;
+export default ActiveSimulation;
