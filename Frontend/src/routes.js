@@ -40,7 +40,7 @@ import Dashboard from "layouts/dashboard";
 import Tables from "layouts/tables";
 import Billing from "layouts/billing";
 import Simulation from "layouts/simulation";
-import Notifications from "layouts/notifications";
+import Schedule from "layouts/schedule";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
@@ -83,11 +83,11 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Notifications",
-    key: "notifications",
+    name: "Schedule",
+    key: "schedule",
     icon: <Icon fontSize="small">notifications</Icon>,
-    route: "/notifications",
-    component: <Notifications />,
+    route: "/schedule",
+    component: <Schedule />,
   },
   {
     type: "collapse",

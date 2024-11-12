@@ -1,0 +1,101 @@
+{
+  "info": {
+    "_postman_id": "12345678-1234-1234-1234-1234567890ab",
+    "name": "Truck Service API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Add Truck",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"truckId\": \"TRUCK001\",\n    \"currentLocation\": \"New York\",\n    \"availability\": true\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/trucks",
+          "host": ["{{base_url}}"],
+          "path": ["trucks"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Trucks",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/trucks",
+          "host": ["{{base_url}}"],
+          "path": ["trucks"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add Schedule",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"truckId\": \"{{truck_id}}\",\n    \"serviceType\": \"delivery\",\n    \"route\": \"New York to Boston\",\n    \"startTime\": \"2024-11-12T09:00:00Z\",\n    \"endTime\": \"2024-11-12T15:00:00Z\",\n    \"requestedBy\": \"John Doe\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/schedules",
+          "host": ["{{base_url}}"],
+          "path": ["schedules"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Schedule Status",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"status\": \"completed\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/schedules/{{schedule_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["schedules", "{{schedule_id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Schedules",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/schedules",
+          "host": ["{{base_url}}"],
+          "path": ["schedules"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
