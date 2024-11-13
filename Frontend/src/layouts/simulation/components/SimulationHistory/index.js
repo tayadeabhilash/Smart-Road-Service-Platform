@@ -1,28 +1,35 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-// @mui material components
+import React, { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
-
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-
 import SimHistoryCard from "layouts/simulation/components/SimHistoryCard";
 
 function SimulationHistory() {
+  const [simulations, setSimulations] = useState([]);
+
+  // Fetch simulation history from the API
+  useEffect(() => {
+    const fetchSimulations = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/simulation"); // Adjust API URL if needed
+        if (!response.ok) throw new Error("Failed to fetch simulations");
+        const data = await response.json();
+        setSimulations(data);
+      } catch (error) {
+        console.error("Error fetching simulation history:", error);
+      }
+    };
+
+    fetchSimulations();
+  }, []);
+
+  // Function to handle deletion of a simulation
+  const handleDelete = (simulationId) => {
+    setSimulations((prevSimulations) =>
+      prevSimulations.filter((sim) => sim._id !== simulationId)
+    );
+  };
+
   return (
     <Card id="simulation-history">
       <MDBox pt={3} px={2}>
@@ -32,9 +39,21 @@ function SimulationHistory() {
       </MDBox>
       <MDBox pt={1} pb={2} px={2}>
         <MDBox component="ul" display="flex" flexDirection="column" p={0} m={0}>
-          <SimHistoryCard name="Simulation 1" map="TOWN01" weather="Cloudy" />
-          <SimHistoryCard name="Simulation 2" map="TOWN02" weather="Clear" />
-          <SimHistoryCard name="Simulation 3" map="TOWN03" weather="Rainy" />
+          {simulations.length > 0 ? (
+            simulations.map((simulation) => (
+              <SimHistoryCard
+                key={simulation._id}
+                name={`Simulation ${simulation.simulation_id}`}
+                map={simulation.map}
+                weather={simulation.weather}
+                vehicleData={simulation.vehicle_data}
+                simulationId={simulation._id} // Pass MongoDB ObjectID for deletion
+                onDelete={handleDelete} // Pass deletion handler
+              />
+            ))
+          ) : (
+            <MDTypography>No simulations found</MDTypography>
+          )}
         </MDBox>
       </MDBox>
     </Card>
