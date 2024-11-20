@@ -1,18 +1,4 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
+import React, { useEffect, useState } from "react";
 // @mui material components
 import Grid from "@mui/material/Grid";
 
@@ -38,6 +24,31 @@ import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
 
+  // State to store number of schedules
+  const [scheduleCount, setScheduleCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch schedules data
+  useEffect(() => {
+    const fetchSchedules = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/schedule");
+        if (!response.ok) {
+          throw new Error("Failed to fetch schedules");
+        }
+        const data = await response.json();
+        setScheduleCount(data.length); // Assuming `data` is an array of schedules
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchSchedules();
+  }, []);
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -53,7 +64,7 @@ function Dashboard() {
                 percentage={{
                   color: "success",
                   amount: "+55%",
-                  label: "than lask week",
+                  label: "than last week",
                 }}
               />
             </MDBox>
@@ -72,19 +83,46 @@ function Dashboard() {
               />
             </MDBox>
           </Grid>
+          {/* Replace Revenue Card with Schedule Count Card */}
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="success"
-                icon="store"
-                title="Revenue"
-                count="34k"
-                percentage={{
-                  color: "success",
-                  amount: "+1%",
-                  label: "than yesterday",
-                }}
-              />
+              {loading ? (
+                <ComplexStatisticsCard
+                  color="info"
+                  icon="schedule"
+                  title="Schedules"
+                  count="Loading..."
+                  percentage={{
+                    color: "info",
+                    amount: "",
+                    label: "",
+                  }}
+                />
+              ) : error ? (
+                <ComplexStatisticsCard
+                  color="error"
+                  icon="error"
+                  title="Schedules"
+                  count="Error"
+                  percentage={{
+                    color: "error",
+                    amount: "",
+                    label: error,
+                  }}
+                />
+              ) : (
+                <ComplexStatisticsCard
+                  color="success"
+                  icon="schedule"
+                  title="Schedules"
+                  count={scheduleCount}
+                  percentage={{
+                    color: "success",
+                    amount: "",
+                    label: "Just updated",
+                  }}
+                />
+              )}
             </MDBox>
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
