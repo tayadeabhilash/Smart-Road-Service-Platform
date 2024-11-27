@@ -33,7 +33,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchSchedules = async () => {
       try {
-        const response = await fetch("http://localhost:5000/schedule");
+        const response = await fetch("http://127.0.0.1:5000/schedule");
         if (!response.ok) {
           throw new Error("Failed to fetch schedules");
         }

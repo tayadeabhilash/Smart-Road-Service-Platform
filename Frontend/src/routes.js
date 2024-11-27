@@ -37,7 +37,6 @@ Coded by www.creative-tim.com
 
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
-import Tables from "layouts/tables";
 import Billing from "layouts/billing";
 import Simulation from "layouts/simulation";
 import Schedule from "layouts/schedule";
@@ -47,6 +46,7 @@ import SignUp from "layouts/authentication/sign-up";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import Tracking from "layouts/tracking";
 
 const routes = [
   {
@@ -60,10 +60,10 @@ const routes = [
   {
     type: "collapse",
     name: "Tracking",
-    key: "tables",
+    key: "tracking",
     icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tables",
-    component: <Tables />,
+    route: "/tracking",
+    component: <Tracking />,
   },
   {
     type: "collapse",

@@ -1,18 +1,13 @@
 from flask import Blueprint, jsonify, request
 from bson import ObjectId
 
+from utils.db_utils import db
+
 api_blueprint = Blueprint('api', __name__)
 
 # MongoDB collections
-trucks = None
-schedules = None
-
-
-def init_db(mongo):
-    global trucks, schedules
-    trucks = mongo.db.servicetrucks
-    schedules = mongo.db.schedules
-
+trucks = db.servicetrucks
+schedules = db.schedules
 
 # Create a new truck
 @api_blueprint.route('/trucks', methods=['POST'])
@@ -85,7 +80,7 @@ def update_schedule(schedule_id):
 
 
 # Get schedules
-@api_blueprint.route('/', methods=['GET'])
+@api_blueprint.route('', methods=['GET'])
 def get_schedules():
     all_schedules = list(schedules.find())
     for schedule in all_schedules:

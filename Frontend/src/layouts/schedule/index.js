@@ -43,7 +43,13 @@ function Schedule() {
 
   const fetchScheduleData = async () => {
     try {
-      const response = await fetch("http://localhost:5000/schedule"); // Replace with your actual API endpoint
+      const response = await fetch("http://127.0.0.1:5000/schedule", {
+        method: 'GET', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
       const data = await response.json();
 
       // Transform data into format suitable for DataTable
@@ -100,7 +106,7 @@ function Schedule() {
 
     if (window.confirm("Are you sure you want to delete this schedule?")) {
       try {
-        const response = await fetch(`http://localhost:5000/schedule/${selectedScheduleId}`, {
+        const response = await fetch(`http://127.0.0.1:5000/schedule/${selectedScheduleId}`, {
           method: 'DELETE',
         });
 
@@ -125,7 +131,7 @@ function Schedule() {
     handleMenuClose(); // Close menu before proceeding
 
     try {
-      const response = await fetch(`http://localhost:5000/schedule/${selectedScheduleId}`);
+      const response = await fetch(`http://127.0.0.1:5000/schedule/${selectedScheduleId}`);
       if (response.ok) {
         const schedule = await response.json();
         setFormData({
@@ -150,7 +156,7 @@ function Schedule() {
     if (isEditing && selectedScheduleId) {
       // PATCH request for updating an existing schedule
       try {
-        const response = await fetch(`http://localhost:5000/schedule/${selectedScheduleId}`, {
+        const response = await fetch(`http://127.0.0.1:5000/schedule/${selectedScheduleId}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),
@@ -169,7 +175,7 @@ function Schedule() {
     } else {
       // POST request for adding a new schedule
       try {
-        const response = await fetch(`http://localhost:5000/schedule`, {
+        const response = await fetch(`http://127.0.0.1:5000/schedule`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),

@@ -1,17 +1,17 @@
 from flask import Flask
-from flask_pymongo import PyMongo
 from flask_cors import CORS
-from schedule_api import api_blueprint, init_db
+from maps_api import map_bp
+from schedule_api import api_blueprint
 
-app = Flask(__name__)
-app.config["MONGO_URI"] = "mongodb+srv://abhilashtayade:sgHtoPZSsJpPAt6p@cluster.0n3nazs.mongodb.net/smarttruck"
-mongo = PyMongo(app)
-CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+def create_app():
+    app = Flask(__name__)
 
-init_db(mongo)
+    CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
-# Register the API blueprint
-app.register_blueprint(api_blueprint, url_prefix='/schedule')
+    # Register the API blueprint
+    app.register_blueprint(api_blueprint, url_prefix='/schedule')
+    app.register_blueprint(map_bp)
+    app.run(debug=True)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    create_app()
