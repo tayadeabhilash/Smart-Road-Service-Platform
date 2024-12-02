@@ -1,30 +1,9 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-// react-router-dom components
+import React from "react";
 import { Link } from "react-router-dom";
-
-// prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
-
-// @mui material components
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Tooltip from "@mui/material/Tooltip";
-
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
@@ -69,6 +48,8 @@ function DefaultProjectCard({ image, label, title, description, action, authors 
           sx={{
             maxWidth: "100%",
             margin: 0,
+            width: "100%",
+            height: "300px",
             boxShadow: ({ boxShadows: { md } }) => md,
             objectFit: "cover",
             objectPosition: "center",
@@ -110,11 +91,10 @@ function DefaultProjectCard({ image, label, title, description, action, authors 
         <MDBox display="flex" justifyContent="space-between" alignItems="center">
           {action.type === "internal" ? (
             <MDButton
-              component={Link}
-              to={action.route}
               variant="outlined"
               size="small"
               color={action.color}
+              onClick={action.onClick} // Use onClick handler for internal actions
             >
               {action.label}
             </MDButton>
@@ -164,6 +144,7 @@ DefaultProjectCard.propTypes = {
       "white",
     ]).isRequired,
     label: PropTypes.string.isRequired,
+    onClick: PropTypes.func, // Add onClick as an optional prop for internal actions
   }).isRequired,
   authors: PropTypes.arrayOf(PropTypes.object),
 };
