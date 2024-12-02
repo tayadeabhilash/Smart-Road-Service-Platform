@@ -63,7 +63,8 @@ function Overview() {
   };
 
   useEffect(() => {
-    fetchTrucks();
+    if(profileData)
+      fetchTrucks();
   }, [profileData]);
 
   const handleViewDetails = (truck) => {
@@ -78,7 +79,7 @@ function Overview() {
 
   const handleSaveChanges = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/trucks/${selectedTruck.id}`, {
+      const response = await fetch(`http://localhost:5000/trucks/${selectedTruck._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(selectedTruck),

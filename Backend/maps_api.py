@@ -41,18 +41,16 @@ def add_truck():
 
 @map_bp.route("/trucks/<string:username>", methods=["GET"])
 def get_trucks_for_user(username):
-    print(username)
     user = users_collection.find_one({"username": username}, {"_id": 1})
-    print(user)
     if not user:
         return jsonify({"error": "User not found"}), 404
 
     user_id = str(user["_id"])
-    print(user_id)
-    trucks = list(collection.find({"user_id": user_id}, {"_id": 0}))
-    print(trucks)
+    trucks = list(collection.find({"user_id": user_id}))
     if not trucks:
         return jsonify({"error": "No trucks found for this user"}), 404
+    for truck in trucks:
+        truck['_id'] = str(truck['_id'])
     return jsonify({"trucks": trucks})
 
 
@@ -72,11 +70,11 @@ def link_truck_to_user(user_id):
     return jsonify({"message": f"Truck {truck_id} linked to user {user_id}."})
 
 
-@map_bp.route("/trucks/<int:truck_id>", methods=["PUT"])
+@map_bp.route("/trucks/<truck_id>", methods=["PUT"])
 def update_truck_state(truck_id):
     data = request.json
     update_result = collection.update_one(
-        {"id": truck_id},
+        {"_id": ObjectId(truck_id)},
         {
             "$set": {
                 "latitude": data.get("latitude"),
