@@ -91,6 +91,14 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "Request Service",
+    key: "RequestService",
+    icon: <Icon fontSize="small">receipt_long</Icon>,
+    route: "/RequestService",
+    component: <RequestService />,
+  },
+  {
+    type: "collapse",
     name: "Profile",
     key: "profile",
     icon: <Icon fontSize="small">person</Icon>,
