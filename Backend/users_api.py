@@ -9,7 +9,7 @@ profile_bp = Blueprint('profile', __name__)
 
 users_collection = db.users  # MongoDB collection for user profiles
 
-SECRET_KEY = 'smartfarmplatform'
+SECRET_KEY = 'smartroadplatform'
 
 
 @profile_bp.route("/profile", methods=["POST"])
@@ -101,8 +101,8 @@ def login():
         return jsonify({"message": "Login successful", "token": create_token(user["username"], user["role"])})
     return jsonify({"error": "Invalid username or password"}), 401
 
-
 def create_token(username, role):
-    expiration_time = datetime.datetime.utcnow() + datetime.timedelta(hours=1)
-    token = jwt.encode({'username': username, 'role': role, 'exp': expiration_time}, SECRET_KEY, algorithm='HS256')
+    """Create a JWT token."""
+    payload = {'username': username, 'role': role, 'iat': datetime.datetime.utcnow()}
+    token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
     return token

@@ -17,8 +17,9 @@ import MDTypography from "components/MDTypography";
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
+import { useNavigate } from 'react-router-dom';
+import useToken from 'hooks/login_hook';
 
 function Schedule() {
   const [scheduleData, setScheduleData] = useState({ columns: [], rows: [] });
@@ -36,7 +37,15 @@ function Schedule() {
 
   const open = Boolean(anchorEl);
 
-  // Fetch schedule data from API
+  const { token } = useToken();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token==null) {
+      navigate('/authentication/sign-in');
+    }
+  }, [token, navigate]);
+
   useEffect(() => {
     fetchScheduleData();
   }, []);

@@ -19,6 +19,8 @@ import truckimg1 from "assets/images/hand-drawn-transport-truck-shipping-illustr
 import truckimg2 from "assets/images/hand-drawn-transport-truck_23-2149167035.jpg";
 import truckimg3 from "assets/images/hand-drawn-transport-truck_23-2149166402.jpg";
 import truckimg4 from "assets/images/hand-drawn-transport-truck_23-2149145940.jpg";
+import { useNavigate } from 'react-router-dom';
+import useToken from 'hooks/login_hook';
 
 const truckImages = [truckimg1, truckimg2, truckimg3, truckimg4];
 
@@ -36,11 +38,19 @@ function Overview() {
     status: "Idle",
     requested_services: "",
   });
+  const { token } = useToken();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token==null) {
+      navigate('/authentication/sign-in');
+    }
+  }, [token, navigate]);
 
   useEffect(() => {
     async function fetchProfile() {
       try {
-        const response = await fetch("http://localhost:5000/profile/tayadeabhilash");
+        const response = await fetch("http://127.0.0.1:5000/profile/tayadeabhilash");
         if (!response.ok) throw new Error("Failed to fetch profile data");
         const data = await response.json();
         setProfileData(data);
@@ -53,7 +63,7 @@ function Overview() {
 
   const fetchTrucks = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/trucks/${profileData.username}`);
+      const response = await fetch(`http://127.0.0.1:5000/trucks/${profileData.username}`);
       if (!response.ok) throw new Error("Failed to fetch trucks data");
       const trucks = await response.json();
       setTruckData(trucks.trucks);
@@ -79,7 +89,7 @@ function Overview() {
 
   const handleSaveChanges = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/trucks/${selectedTruck._id}`, {
+      const response = await fetch(`http://127.0.0.1:5000/trucks/${selectedTruck._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(selectedTruck),
@@ -120,7 +130,7 @@ function Overview() {
 
   const handleAddTruckSubmit = async () => {
     try {      
-      const response = await fetch(`http://localhost:5000/trucks`, {
+      const response = await fetch(`http://127.0.0.1:5000/trucks`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

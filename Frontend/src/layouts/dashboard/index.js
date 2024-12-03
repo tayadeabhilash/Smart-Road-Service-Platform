@@ -20,6 +20,8 @@ import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 // Dashboard components
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
+import { useNavigate } from 'react-router-dom';
+import useToken from 'hooks/login_hook';
 
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
@@ -28,6 +30,14 @@ function Dashboard() {
   const [scheduleCount, setScheduleCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { token } = useToken();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token==null) {
+      navigate('/authentication/sign-in');
+    }
+  }, [token, navigate]);
 
   // Fetch schedules data
   useEffect(() => {
