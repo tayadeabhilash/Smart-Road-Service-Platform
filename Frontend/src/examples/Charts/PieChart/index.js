@@ -72,9 +72,14 @@ function PieChart({ icon, title, description, height, chart }) {
       ) : null}
       {useMemo(
         () => (
-          <MDBox height={height}>
-            <Pie data={data} options={options} redraw />
-          </MDBox>
+          <MDBox
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height={height}
+          >
+            <Pie data={data}/>
+            </MDBox>
         ),
         [chart, height]
       )}

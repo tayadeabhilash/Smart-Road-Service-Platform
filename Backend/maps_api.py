@@ -51,7 +51,7 @@ def get_trucks_for_user(username):
         return jsonify({"error": "No trucks found for this user"}), 404
     for truck in trucks:
         truck['_id'] = str(truck['_id'])
-    return jsonify({"trucks": trucks})
+    return jsonify(trucks)
 
 
 @map_bp.route("/users/<string:user_id>/link-truck", methods=["POST"])

@@ -44,7 +44,8 @@ def add_schedule():
         "startTime": data['startTime'],
         "endTime": data['endTime'],
         "status": "scheduled",
-        "requestedBy": data['requestedBy']
+        "requestedBy": data['requestedBy'],
+        "username": data['username']
     }
     schedule_id = schedules.insert_one(schedule).inserted_id
     trucks.update_one({"_id": ObjectId(data['truckId'])}, {"$set": {"status": "on-duty", "availability": False}})
@@ -83,6 +84,15 @@ def update_schedule(schedule_id):
 @api_blueprint.route('', methods=['GET'])
 def get_schedules():
     all_schedules = list(schedules.find())
+    for schedule in all_schedules:
+        schedule['_id'] = str(schedule['_id'])
+        schedule['truckId'] = str(schedule['truckId'])
+    return jsonify(all_schedules), 200
+
+
+@api_blueprint.route('/<username>', methods=['GET'])
+def get_schedules_by_username(username):
+    all_schedules = list(schedules.find({"username": username}))
     for schedule in all_schedules:
         schedule['_id'] = str(schedule['_id'])
         schedule['truckId'] = str(schedule['truckId'])

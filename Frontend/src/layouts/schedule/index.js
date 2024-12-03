@@ -3,17 +3,19 @@ import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-
+import { jwtDecode } from "jwt-decode";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
@@ -29,11 +31,14 @@ function Schedule() {
     route: "",
     startTime: "",
     endTime: "",
-    requestedBy: ""
+    requestedBy: "",
+    username: ""
   });
   const [isEditing, setIsEditing] = useState(false); // Track if we're editing or adding
   const [selectedScheduleId, setSelectedScheduleId] = useState(null); // Track selected schedule for actions
   const [anchorEl, setAnchorEl] = useState(null); // For dropdown menu
+  const [userName, setUserName] = useState(null);
+  const [trucks, setTrucks] = useState([]);
 
   const open = Boolean(anchorEl);
 
@@ -44,15 +49,35 @@ function Schedule() {
     if (token==null) {
       navigate('/authentication/sign-in');
     }
+    setUserName(jwtDecode(token).username);
   }, [token, navigate]);
 
   useEffect(() => {
+    fetchTrucks();
     fetchScheduleData();
-  }, []);
+    console.log(userName);
+  }, [userName]);
+
+  const fetchTrucks = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/trucks/${userName}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setTrucks(data); // Set the truck data
+      } else {
+        console.error("Failed to fetch trucks");
+      }
+    } catch (error) {
+      console.error("Error fetching trucks:", error);
+    }
+  };
 
   const fetchScheduleData = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:5000/schedule", {
+      const response = await fetch(`http://127.0.0.1:5000/schedule/${userName}`, {
         method: 'GET', 
         headers: {
           'Content-Type': 'application/json',
@@ -158,12 +183,10 @@ function Schedule() {
     }
   };
 
-  // Handle Form Submit (for both Add and Edit)
   const handleSubmit = async (e) => {
     e.preventDefault();
   
     if (isEditing && selectedScheduleId) {
-      // PATCH request for updating an existing schedule
       try {
         const response = await fetch(`http://127.0.0.1:5000/schedule/${selectedScheduleId}`, {
           method: 'PATCH',
@@ -182,7 +205,7 @@ function Schedule() {
         console.error("Error updating schedule:", error);
       }
     } else {
-      // POST request for adding a new schedule
+      formData.username = userName
       try {
         const response = await fetch(`http://127.0.0.1:5000/schedule`, {
           method: 'POST',
@@ -192,7 +215,7 @@ function Schedule() {
   
         if (response.ok) {
           alert("Schedule added successfully");
-          fetchScheduleData(); // Re-fetch data after adding a new schedule
+          fetchScheduleData();
           clearForm();
         } else {
           alert("Failed to add schedule");
@@ -211,7 +234,8 @@ function Schedule() {
       route: "",
       startTime: "",
       endTime: "",
-      requestedBy: ""
+      requestedBy: "",
+      username: ""
     });
     setIsEditing(false);
     setSelectedScheduleId(null);
@@ -233,13 +257,22 @@ function Schedule() {
                 <form onSubmit={handleSubmit}>
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
-                      <TextField
-                        label="Truck ID"
-                        fullWidth
+                    <FormControl fullWidth>
+                      <InputLabel>Truck Id</InputLabel>
+                      <Select
                         value={formData.truckId}
+                        defaultValue="Truck Id"
                         onChange={(e) => setFormData({ ...formData, truckId: e.target.value })}
-                        required
-                      />
+                        style={{
+                        }}
+                      >
+                        {trucks.map((truck) => (
+                          <MenuItem key={truck.name} value={truck._id}>
+                            {truck.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField

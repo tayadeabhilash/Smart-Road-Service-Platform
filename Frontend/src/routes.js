@@ -5,7 +5,7 @@ import Schedule from "layouts/schedule";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
-
+import RequestService from "layouts/RequestService/index"
 // @mui icons
 import Icon from "@mui/material/Icon";
 import Tracking from "layouts/tracking";
@@ -26,14 +26,6 @@ const routes = [
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/tracking",
     component: <Tracking />,
-  },
-  {
-    type: "collapse",
-    name: "Request Service",
-    key: "service",
-    icon: <Icon fontSize="small">receipt_long</Icon>,
-    route: "/service",
-    component: <Service />,
   },
   {
     type: "collapse",

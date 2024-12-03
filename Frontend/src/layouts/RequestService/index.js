@@ -199,10 +199,10 @@ function ServiceRequests() {
     <DashboardLayout>
       <DashboardNavbar />
       <MDBox pt={6} pb={3}>
-        <Grid container spacing={10}>
+        <Grid container spacing={6}>
           <Grid item xs={12}>
             <Card>
-              <MDBox p={10}>
+              <MDBox p={3}>
                 <MDTypography variant="h6">
                   {isEditing ? "Edit Service Request" : "Add Service Request"}
                 </MDTypography>

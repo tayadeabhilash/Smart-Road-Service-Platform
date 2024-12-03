@@ -66,7 +66,7 @@ function Overview() {
       const response = await fetch(`http://127.0.0.1:5000/trucks/${profileData.username}`);
       if (!response.ok) throw new Error("Failed to fetch trucks data");
       const trucks = await response.json();
-      setTruckData(trucks.trucks);
+      setTruckData(trucks);
     } catch (error) {
       console.error("Error fetching trucks:", error);
     }
