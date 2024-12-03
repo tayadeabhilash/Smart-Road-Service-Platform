@@ -19,7 +19,8 @@ import MDBox from "components/MDBox";
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
+import { useNavigate } from 'react-router-dom';
+import useToken from 'hooks/login_hook';
 
 // Fix Leaflet default icon issue
 delete L.Icon.Default.prototype._getIconUrl;
@@ -35,7 +36,7 @@ function SetViewOnSearch({ filteredTrucks }) {
     useEffect(() => {
         if (filteredTrucks.length > 0) {
             const { latitude, longitude } = filteredTrucks[0];
-            map.setView([latitude, longitude], 15); // Zoom level 15 for closer view
+            map.setView([latitude, longitude], 15);
         }
     }, [filteredTrucks, map]);
     return null;
@@ -57,6 +58,14 @@ function Tracking() {
     const [filteredTrucks, setFilteredTrucks] = useState([]); // Multiple trucks
     const [serviceTrucks, setServiceTrucks] = useState([]); // Trucks with requested services
     const [showServiceTrucks, setShowServiceTrucks] = useState(false); // Toggle visibility
+    const { token } = useToken();
+    const navigate = useNavigate();
+  
+    useEffect(() => {
+      if (token==null) {
+        navigate('/authentication/sign-in');
+      }
+    }, [token, navigate]);
 
     useEffect(() => {
         axios

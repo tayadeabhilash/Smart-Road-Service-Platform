@@ -2,10 +2,14 @@ from flask import request, jsonify, Blueprint
 from werkzeug.security import generate_password_hash, check_password_hash
 from utils.db_utils import db
 import base64
+import jwt
+import datetime
 
 profile_bp = Blueprint('profile', __name__)
 
 users_collection = db.users  # MongoDB collection for user profiles
+
+SECRET_KEY = 'smartroadplatform'
 
 
 @profile_bp.route("/profile", methods=["POST"])
@@ -94,5 +98,11 @@ def login():
 
     user = users_collection.find_one({"username": data["username"]})
     if user and check_password_hash(user["password"], data["password"]):
-        return jsonify({"message": "Login successful", "username": user["username"], "role": user["role"]})
+        return jsonify({"message": "Login successful", "token": create_token(user["username"], user["role"])})
     return jsonify({"error": "Invalid username or password"}), 401
+
+def create_token(username, role):
+    """Create a JWT token."""
+    payload = {'username': username, 'role': role, 'iat': datetime.datetime.utcnow()}
+    token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+    return token

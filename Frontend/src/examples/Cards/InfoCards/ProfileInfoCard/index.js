@@ -26,7 +26,7 @@ function ProfileInfoCard({ title, info, action, shadow }) {
 
   const handleSaveClick = async () => {
     try {
-      const response = await axios.put(`http://localhost:5000/profile/${info.username}`, formData);
+      const response = await axios.put(`http://127.0.0.1:5000/profile/${info.username}`, formData);
       if (response.data.message === "Profile updated successfully") {
         alert("Profile updated successfully");
         setEditMode(false);
