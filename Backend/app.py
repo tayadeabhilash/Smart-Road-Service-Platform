@@ -9,7 +9,7 @@ from requestservice_api import rs_blueprint
 def create_app():
     app = Flask(__name__)
 
-    CORS(app, support_credentials=True)
+    CORS(app, resources={r"/*": {"origins": "*"}})
 
     # Register the API blueprint
     app.register_blueprint(api_blueprint, url_prefix='/schedule')
@@ -17,7 +17,7 @@ def create_app():
     app.register_blueprint(profile_bp)
     app.register_blueprint(simulation_blueprint, url_prefix='/simulation')
     app.register_blueprint(rs_blueprint)
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True)
 
 if __name__ == '__main__':
     create_app()

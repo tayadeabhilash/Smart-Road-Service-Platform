@@ -20,7 +20,7 @@ import MDButton from "components/MDButton";
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 
 // Images
-import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+import bgImage from "assets/images/j73zg2s8gewu8ejzhb2b.png";
 
 import useToken from 'hooks/login_hook';
 
