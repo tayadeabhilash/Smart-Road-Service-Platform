@@ -12,6 +12,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
+import { jwtDecode } from "jwt-decode";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -60,16 +61,22 @@ function Tracking() {
     const [showServiceTrucks, setShowServiceTrucks] = useState(false); // Toggle visibility
     const { token } = useToken();
     const navigate = useNavigate();
-  
+    const [userName, setUserName] = useState(null);
+    const [role, setRole] = useState(null);
+
     useEffect(() => {
       if (token==null) {
         navigate('/authentication/sign-in');
       }
+      const decoded = jwtDecode(token);
+        setUserName(decoded.username);
+        setRole(decoded.role)
     }, [token, navigate]);
 
     useEffect(() => {
+        const url = role === 'truck_owner' ? `http://127.0.0.1:5000/trucks/${userName}` : `http://127.0.0.1:5000/trucks`;
         axios
-            .get("http://127.0.0.1:5000/trucks")
+            .get(url)
             .then((response) => {
                 setTrucks(response.data);
                 setLoading(false);
@@ -78,7 +85,7 @@ function Tracking() {
                 console.error("Error fetching trucks:", error);
                 setLoading(false);
             });
-    }, []);
+    }, [role]);
 
     const handleTruckSearch = () => {
         const truckNames = truckNumbers.split(",").map((num) => `Truck ${num.trim()}`);
@@ -106,9 +113,9 @@ function Tracking() {
     return (
         <DashboardLayout>
             <DashboardNavbar />
-            <MDBox mt={8}>
+            <MDBox mt={2}>
                 <MDBox mb={3}>
-                    <Grid container spacing={3}>
+                    <Grid container spacing={4}>
                         <Grid item xs={12} lg={12}>
                             <Card
                                 sx={{

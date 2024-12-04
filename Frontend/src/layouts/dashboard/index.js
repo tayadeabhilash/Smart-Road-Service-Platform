@@ -57,8 +57,7 @@ function Dashboard() {
   }, [token, navigate]);
 
   const fetchSchedules = async () => {
-    let url = `http://127.0.0.1:5000/schedule`;
-    role === 'cloud_service_staff' ? url += "/" + userName : '';
+    const url = role === 'cloud_service_staff' ? `http://127.0.0.1:5000/schedule`: `http://127.0.0.1:5000/schedule/${userName}`;
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -75,8 +74,9 @@ function Dashboard() {
 
   // Function to fetch trucks data
   const fetchTrucks = async () => {
+    const url = role === 'truck_owner' ? `http://127.0.0.1:5000/trucks/${userName}` : `http://127.0.0.1:5000/trucks`;
     try {
-      const response = await fetch('http://127.0.0.1:5000/trucks');
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error("Failed to fetch trucks");
       }
@@ -93,7 +93,7 @@ function Dashboard() {
     datasets: 
       {
         data: [20, 5],
-        backgroundColors: ["info", "error"],
+        backgroundColors: ["secondary", "primary"],
       },
     
   };
@@ -124,8 +124,9 @@ function Dashboard() {
   });
 
   const fetchSimulations = async () => {
+    const url = `http://127.0.0.1:5000/simulation`;    
     try {
-      const response = await fetch('http://127.0.0.1:5000/simulation');
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error("Failed to fetch simulations");
       }
@@ -165,7 +166,7 @@ function Dashboard() {
   // Function to fetch requested services data
   const fetchRequestedServices = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:5000/requested-services');
+      const response = await fetch('http://127.0.0.1:5000/services');
       if (!response.ok) {
         throw new Error("Failed to fetch requested services");
       }
@@ -363,7 +364,7 @@ function Dashboard() {
              <Grid item xs={12} md={6} lg={4}>
                <MDBox mb={3}>
                <VerticalBarChart
-                  icon={{ component: "local_shipping", color: "secondary" }}
+                  icon={{ component: "local_shipping", color: "error" }}
                   title="Truck Status Overview"
                   description="Count of trucks by status"
                   height="15rem"
@@ -374,7 +375,7 @@ function Dashboard() {
              <Grid item xs={12} md={6} lg={4}>
                <MDBox mb={3}>
                <PieChart
-                icon={{ component: "pie_chart", color: "primary" }}
+                icon={{ component: "pie_chart", color: "success" }}
                 title="Service Requests Status"
                 description="Distribution of service requests"
                 height="15rem"

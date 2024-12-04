@@ -16,6 +16,7 @@ import Button from "@mui/material/Button";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import { useNavigate } from 'react-router-dom';
 
 function validateFormData(formData) {
   const errors = {};
@@ -48,6 +49,7 @@ function Cover() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [imageName, setImageName] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -86,6 +88,7 @@ function Cover() {
         }
 
         console.log("Form submitted successfully");
+        navigate('/authentication/sign-in');
       } catch (error) {
         setErrorMessage(error.message);
         setDialogOpen(true);

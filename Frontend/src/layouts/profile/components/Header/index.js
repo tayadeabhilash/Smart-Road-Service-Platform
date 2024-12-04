@@ -12,10 +12,9 @@ import MDAvatar from "components/MDAvatar";
 import breakpoints from "assets/theme/base/breakpoints";
 import backgroundImage from "assets/images/vsj7oayjcyugt6exnzm1.png";
 
-function Header({ children }) {
+function Header({ children, profileData }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
-  const [profileData, setProfileData] = useState(null);
 
   useEffect(() => {
     function handleTabsOrientation() {
@@ -36,7 +35,6 @@ function Header({ children }) {
         const response = await fetch("http://127.0.0.1:5000/profile/tayadeabhilash");
         if (!response.ok) throw new Error("Failed to fetch profile data");
         const data = await response.json();
-        setProfileData(data);
       } catch (error) {
         console.error("Error fetching profile:", error);
       }
@@ -121,10 +119,12 @@ function Header({ children }) {
 
 Header.defaultProps = {
   children: "",
+  profileData: ""
 };
 
 Header.propTypes = {
   children: PropTypes.node,
+  profileData: PropTypes.any
 };
 
 export default Header;

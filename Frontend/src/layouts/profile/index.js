@@ -21,6 +21,7 @@ import truckimg3 from "assets/images/hand-drawn-transport-truck_23-2149166402.jp
 import truckimg4 from "assets/images/hand-drawn-transport-truck_23-2149145940.jpg";
 import { useNavigate } from 'react-router-dom';
 import useToken from 'hooks/login_hook';
+import { jwtDecode } from "jwt-decode";
 
 const truckImages = [truckimg1, truckimg2, truckimg3, truckimg4];
 
@@ -40,17 +41,19 @@ function Overview() {
   });
   const { token } = useToken();
   const navigate = useNavigate();
+  const [userName, setUserName] = useState(null);
 
   useEffect(() => {
     if (token==null) {
       navigate('/authentication/sign-in');
     }
+    setUserName(jwtDecode(token).username);
   }, [token, navigate]);
 
   useEffect(() => {
     async function fetchProfile() {
       try {
-        const response = await fetch("http://127.0.0.1:5000/profile/tayadeabhilash");
+        const response = await fetch(`http://127.0.0.1:5000/profile/${userName}`);
         if (!response.ok) throw new Error("Failed to fetch profile data");
         const data = await response.json();
         setProfileData(data);
@@ -59,11 +62,12 @@ function Overview() {
       }
     }
     fetchProfile();
-  }, []);
+  }, [userName]);
 
   const fetchTrucks = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/trucks/${profileData.username}`);
+      const url = profileData.role == "cloud_service_staff"? `http://127.0.0.1:5000/trucks`:`http://127.0.0.1:5000/trucks/${profileData.username}`
+      const response = await fetch(url);
       if (!response.ok) throw new Error("Failed to fetch trucks data");
       const trucks = await response.json();
       setTruckData(trucks);
@@ -154,7 +158,7 @@ function Overview() {
     <DashboardLayout>
       <DashboardNavbar />
       <MDBox mb={2} />
-      <Header>
+      <Header profileData={profileData}>
         <MDBox mt={5} mb={3}>
           <Grid container spacing={3}>
             <Grid item xs={12}>

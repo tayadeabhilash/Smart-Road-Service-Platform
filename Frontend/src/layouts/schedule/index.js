@@ -246,7 +246,7 @@ function Schedule() {
       <DashboardNavbar />
 
       {/* Schedule Form */}
-      <MDBox pt={6} pb={3}>
+      <MDBox pt={3} pb={3}>
         <Grid container spacing={6}>
           <Grid item xs={12}>
             <Card>
