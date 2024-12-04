@@ -60,7 +60,7 @@ function Schedule() {
 
   const fetchTrucks = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/trucks/${userName}`, {
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/trucks/${userName}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
@@ -77,7 +77,7 @@ function Schedule() {
 
   const fetchScheduleData = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/schedule/${userName}`, {
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/schedule/${userName}`, {
         method: 'GET', 
         headers: {
           'Content-Type': 'application/json',
@@ -140,7 +140,7 @@ function Schedule() {
 
     if (window.confirm("Are you sure you want to delete this schedule?")) {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/schedule/${selectedScheduleId}`, {
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/schedule/${selectedScheduleId}`, {
           method: 'DELETE',
         });
 
@@ -165,7 +165,7 @@ function Schedule() {
     handleMenuClose(); // Close menu before proceeding
 
     try {
-      const response = await fetch(`http://127.0.0.1:5000/schedule/${selectedScheduleId}`);
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/schedule/${selectedScheduleId}`);
       if (response.ok) {
         const schedule = await response.json();
         setFormData({
@@ -188,7 +188,7 @@ function Schedule() {
   
     if (isEditing && selectedScheduleId) {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/schedule/${selectedScheduleId}`, {
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/schedule/${selectedScheduleId}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),
@@ -207,7 +207,7 @@ function Schedule() {
     } else {
       formData.username = userName
       try {
-        const response = await fetch(`http://127.0.0.1:5000/schedule`, {
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/schedule`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),

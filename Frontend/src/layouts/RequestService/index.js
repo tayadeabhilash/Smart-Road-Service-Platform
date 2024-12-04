@@ -67,7 +67,7 @@ function ServiceRequests() {
 
   const fetchScheduleData = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:5000/services", {
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/services`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -122,7 +122,7 @@ function ServiceRequests() {
 
     if (window.confirm("Are you sure you want to delete this request?")) {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/services/${selectedScheduleId}`, {
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/services/${selectedScheduleId}`, {
           method: "DELETE",
         });
 
@@ -146,7 +146,7 @@ function ServiceRequests() {
 
     if (isEditing && selectedScheduleId) {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/services/${selectedScheduleId}`, {
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/services/${selectedScheduleId}`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
@@ -164,7 +164,7 @@ function ServiceRequests() {
       }
     } else {
       try {
-        const response = await fetch("http://127.0.0.1:5000/services", {
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/services`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),

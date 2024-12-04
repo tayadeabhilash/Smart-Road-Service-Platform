@@ -35,8 +35,10 @@ function Basic() {
 
   // Function to handle login
   const handleLogin = async () => {
+    console.log("Base URL:", process.env.REACT_APP_BASE_URL);
+
     try {
-      const response = await axios.post("http://127.0.0.1:5000/login", {
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/login`, {
         username: email,
         password: password,
       });

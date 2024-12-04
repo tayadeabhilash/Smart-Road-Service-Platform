@@ -30,7 +30,7 @@ function ActiveSimulation() {
     const formData = { map, weather };
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/run_simulation', {
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/run_simulation`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -67,7 +67,7 @@ function ActiveSimulation() {
       <MDBox sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <MDBox
           component="img"
-          src="http://127.0.0.1:5000/camera_stream"
+          src={process.env.REACT_APP_BASE_URL + '/camera_stream'}
           alt="CARLA Simulation Camera Stream"
           width="80%"
           pb={2}

@@ -74,7 +74,7 @@ function Tracking() {
     }, [token, navigate]);
 
     useEffect(() => {
-        const url = role === 'truck_owner' ? `http://127.0.0.1:5000/trucks/${userName}` : `http://127.0.0.1:5000/trucks`;
+        const url = role === 'truck_owner' ? `${process.env.REACT_APP_BASE_URL}/trucks/${userName}` : `${process.env.REACT_APP_BASE_URL}/trucks`;
         axios
             .get(url)
             .then((response) => {

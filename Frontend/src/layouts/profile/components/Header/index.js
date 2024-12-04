@@ -32,7 +32,7 @@ function Header({ children, profileData }) {
   useEffect(() => {
     async function fetchProfile() {
       try {
-        const response = await fetch("http://127.0.0.1:5000/profile/tayadeabhilash");
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/profile/tayadeabhilash`);
         if (!response.ok) throw new Error("Failed to fetch profile data");
         const data = await response.json();
       } catch (error) {

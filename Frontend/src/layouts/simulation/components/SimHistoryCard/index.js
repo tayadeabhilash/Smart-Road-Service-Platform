@@ -21,7 +21,7 @@ function SimHistoryCard({ name, map, weather, vehicleData, simulationId, onDelet
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/simulation/${simulationId}`, {
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/simulation/${simulationId}`, {
         method: 'DELETE',
       });
 

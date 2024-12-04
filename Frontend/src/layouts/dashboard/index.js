@@ -50,14 +50,15 @@ function Dashboard() {
   useEffect(() => {
     if (token == null) {
       navigate('/authentication/sign-in');
+    } else {
+      const decoded = jwtDecode(token);
+      setUserName(decoded.username);
+      setRole(decoded.role)
     }
-    const decoded = jwtDecode(token);
-    setUserName(decoded.username);
-    setRole(decoded.role)
   }, [token, navigate]);
 
   const fetchSchedules = async () => {
-    const url = role === 'cloud_service_staff' ? `http://127.0.0.1:5000/schedule`: `http://127.0.0.1:5000/schedule/${userName}`;
+    const url = role === 'cloud_service_staff' ? `${process.env.REACT_APP_BASE_URL}/schedule`: `${process.env.REACT_APP_BASE_URL}/schedule/${userName}`;
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -74,7 +75,7 @@ function Dashboard() {
 
   // Function to fetch trucks data
   const fetchTrucks = async () => {
-    const url = role === 'truck_owner' ? `http://127.0.0.1:5000/trucks/${userName}` : `http://127.0.0.1:5000/trucks`;
+    const url = role === 'truck_owner' ? `${process.env.REACT_APP_BASE_URL}/trucks/${userName}` : `${process.env.REACT_APP_BASE_URL}/trucks`;
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -124,7 +125,7 @@ function Dashboard() {
   });
 
   const fetchSimulations = async () => {
-    const url = `http://127.0.0.1:5000/simulation`;    
+    const url = `${process.env.REACT_APP_BASE_URL}/simulation`;    
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -166,7 +167,7 @@ function Dashboard() {
   // Function to fetch requested services data
   const fetchRequestedServices = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:5000/services');
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/services`);
       if (!response.ok) {
         throw new Error("Failed to fetch requested services");
       }

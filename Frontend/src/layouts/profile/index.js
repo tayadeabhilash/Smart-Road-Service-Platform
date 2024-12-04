@@ -53,7 +53,7 @@ function Overview() {
   useEffect(() => {
     async function fetchProfile() {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/profile/${userName}`);
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/profile/${userName}`);
         if (!response.ok) throw new Error("Failed to fetch profile data");
         const data = await response.json();
         setProfileData(data);
@@ -66,7 +66,7 @@ function Overview() {
 
   const fetchTrucks = async () => {
     try {
-      const url = profileData.role == "cloud_service_staff"? `http://127.0.0.1:5000/trucks`:`http://127.0.0.1:5000/trucks/${profileData.username}`
+      const url = profileData.role == "cloud_service_staff"? `${process.env.REACT_APP_BASE_URL}/trucks`:`${process.env.REACT_APP_BASE_URL}/trucks/${profileData.username}`
       const response = await fetch(url);
       if (!response.ok) throw new Error("Failed to fetch trucks data");
       const trucks = await response.json();
@@ -93,7 +93,7 @@ function Overview() {
 
   const handleSaveChanges = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/trucks/${selectedTruck._id}`, {
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/trucks/${selectedTruck._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(selectedTruck),
@@ -134,7 +134,7 @@ function Overview() {
 
   const handleAddTruckSubmit = async () => {
     try {      
-      const response = await fetch(`http://127.0.0.1:5000/trucks`, {
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/trucks`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
